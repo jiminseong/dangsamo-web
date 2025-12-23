@@ -191,8 +191,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
                 <div>
                   <h3 className="text-2xl font-bold tracking-tight mb-3">초고속 위험도 스캔</h3>
                   <p className="text-zinc-500 leading-relaxed">
-                    URL을 입력하는 즉시 12가지 검증 알고리즘이 동시에 작동합니다. 3초 안에 과장광고,
-                    가격 거품, 가짜 리뷰 여부를 확인하세요.
+                    URL을 입력하는 즉시. 과장광고, 가격 거품, 가짜 리뷰 여부를 확인하세요.
                   </p>
                 </div>
               </div>
