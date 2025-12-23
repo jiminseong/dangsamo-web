@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 export async function analyzeFree(input: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" });
 
   const prompt = `
     당신은 소비자를 보호하는 "광고 리스크 점검" 전문가입니다.
@@ -32,7 +32,7 @@ export async function analyzeFree(input: string) {
 }
 
 export async function analyzePaid(input: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-002" });
 
   const prompt = `
     당신은 소비자를 보호하는 "광고 리스크 점검" 전문가입니다.
