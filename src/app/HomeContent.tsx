@@ -367,7 +367,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
       </section>
 
       {/* Stats/Social Proof (Ticker style) */}
-      <section className="py-20 bg-zinc-900 border-t border-zinc-800 text-white overflow-hidden">
+      {/* <section className="py-20 bg-zinc-900 border-t border-zinc-800 text-white overflow-hidden">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h3 className="text-zinc-500 text-sm font-semibold uppercase tracking-widest mb-12">
             검증된 분석 플랫폼
@@ -389,7 +389,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Footer / CTA */}
       <footer className="py-24 bg-white border-t border-zinc-100">
