@@ -8,19 +8,16 @@ import { User } from "@supabase/supabase-js";
 import {
   Search,
   ShieldCheck,
-  TrendingDown,
   BarChart3,
   CheckCircle2,
   Zap,
   MessageSquare,
   Sparkles,
-  Target,
-  AlertTriangle,
   ArrowRight,
   Share2,
-  DollarSign,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { AnalysisData } from "@/components/AnalysisResult";
 
 interface HomeContentProps {
   user: User | null;
@@ -31,11 +28,11 @@ interface HomeContentProps {
 }
 
 export function HomeContent({ user, initialData }: HomeContentProps) {
-  const [result, setResult] = useState<any>(null);
+  const [result, setResult] = useState<AnalysisData | null>(null);
   const [kind, setKind] = useState<"free" | "paid">("free");
   const [stats, setStats] = useState(initialData);
 
-  const handleResult = (newResult: any, newKind: "free" | "paid") => {
+  const handleResult = (newResult: AnalysisData, newKind: "free" | "paid") => {
     setResult(newResult);
     setKind(newKind);
     if (newKind === "free") {
@@ -57,7 +54,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
       } else {
         alert(data.error || "결제 페이지 이동 실패");
       }
-    } catch (err) {
+    } catch {
       alert("결제 요청 중 오류가 발생했습니다.");
     }
   };

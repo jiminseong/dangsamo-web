@@ -1,10 +1,18 @@
 "use client";
 
-import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight, ExternalLink } from "lucide-react";
+import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
+export interface AnalysisData {
+  riskScore: number;
+  shortReasons?: string[];
+  signals?: { type: string; reason: string }[];
+  implications?: string[];
+  nextActions?: string[];
+}
+
 interface AnalysisResultProps {
-  result: any;
+  result: AnalysisData | null;
   kind: "free" | "paid";
 }
 
@@ -26,6 +34,7 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("링크가 복사되었습니다!");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).gtag?.("event", "share_click");
   };
 
@@ -108,7 +117,7 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
               </h4>
             </div>
             <div className="grid gap-4">
-              {result.signals?.map((signal: any, i: number) => (
+              {result.signals?.map((signal, i) => (
                 <div
                   key={i}
                   className="bg-card p-6 rounded-3xl border border-border shadow-sm hover:border-indigo-100 transition-colors group"

@@ -6,8 +6,8 @@ export const polar = new Polar({
 });
 
 export async function createCheckout(userId: string, userEmail: string) {
-  const result = await polar.checkouts.custom.create({
-    productId: process.env.NEXT_PUBLIC_POLAR_PRODUCT_ID!,
+  const result = await polar.checkouts.create({
+    products: [process.env.NEXT_PUBLIC_POLAR_PRODUCT_ID!],
     successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/billing/return?checkout_id={CHECKOUT_ID}`,
     customerEmail: userEmail,
     metadata: {

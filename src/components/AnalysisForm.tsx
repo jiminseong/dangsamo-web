@@ -3,10 +3,12 @@
 import { useState } from "react";
 import { Search, Zap, CreditCard, Loader2, Sparkles } from "lucide-react";
 
+import { AnalysisData } from "./AnalysisResult";
+
 interface AnalysisFormProps {
   freeCount: number;
   credits: number;
-  onResult: (result: any, kind: "free" | "paid") => void;
+  onResult: (result: AnalysisData, kind: "free" | "paid") => void;
   onStartPayment: () => void;
 }
 
@@ -28,9 +30,14 @@ export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: A
       if (!res.ok) throw new Error(data.error || "분석 실패");
 
       onResult(data, kind);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag?.("event", "analysis_complete", { kind });
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert("알 수 없는 오류가 발생했습니다.");
+      }
     } finally {
       setIsLoading(false);
     }

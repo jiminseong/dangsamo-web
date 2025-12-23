@@ -21,11 +21,11 @@ export async function analyzeFree(input: string) {
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
-  
+
   try {
     const jsonStr = text.match(/\{[\s\S]*\}/)?.[0] || text;
     return JSON.parse(jsonStr);
-  } catch (e) {
+  } catch {
     console.error("AI Response Parsing Error:", text);
     return { riskScore: 50, shortReasons: ["분석 중 오류가 발생했습니다."] };
   }
@@ -55,17 +55,17 @@ export async function analyzePaid(input: string) {
   const result = await model.generateContent(prompt);
   const response = await result.response;
   const text = response.text();
-  
+
   try {
     const jsonStr = text.match(/\{[\s\S]*\}/)?.[0] || text;
     return JSON.parse(jsonStr);
-  } catch (e) {
+  } catch {
     console.error("AI Response Parsing Error:", text);
-    return { 
-      riskScore: 50, 
-      signals: [], 
-      implications: ["상세 분석 중 오류가 발생했습니다."], 
-      nextActions: ["잠시 후 다시 시도해주세요."] 
+    return {
+      riskScore: 50,
+      signals: [],
+      implications: ["상세 분석 중 오류가 발생했습니다."],
+      nextActions: ["잠시 후 다시 시도해주세요."],
     };
   }
 }
