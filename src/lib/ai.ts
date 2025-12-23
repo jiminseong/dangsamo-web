@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
 
 export async function analyzeFree(input: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-002" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
     당신은 소비자를 보호하는 "광고 리스크 점검" 전문가입니다.
@@ -32,12 +32,12 @@ export async function analyzeFree(input: string) {
 }
 
 export async function analyzePaid(input: string) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-002" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
   const prompt = `
     당신은 소비자를 보호하는 "광고 리스크 점검" 전문가입니다.
     사용자가 입력한 상품명 또는 URL에 대해 과장 광고 위험성을 상세히 분석하세요.
-    
+    까지
     입력: ${input}
     
     출력 형식: 반드시 아래 JSON 형식으로만 응답하세요. 다른 설명은 생략하세요.
