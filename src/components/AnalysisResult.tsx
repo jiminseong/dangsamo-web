@@ -25,9 +25,9 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
   if (!result) return null;
 
   const getRiskColor = (score: number) => {
-    if (score < 30) return "bg-emerald-500";
-    if (score < 70) return "bg-amber-500";
-    return "bg-rose-500";
+    if (score < 30) return "#10b981"; // emerald-500
+    if (score < 70) return "#f59e0b"; // amber-500
+    return "#f43f5e"; // rose-500
   };
 
   const getRiskLabel = (score: number) => {
@@ -98,20 +98,17 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
           </span>
           <div className="flex items-center justify-center gap-4">
             <h3
-              className={`text-6xl md:text-7xl font-black tabular-nums tracking-tighter ${
-                result.riskScore < 30
-                  ? "text-emerald-500"
-                  : result.riskScore < 70
-                  ? "text-amber-500"
-                  : "text-rose-500"
-              }`}
+              className="text-6xl md:text-7xl font-black tabular-nums tracking-tighter"
+              style={{
+                color:
+                  result.riskScore < 30 ? "#10b981" : result.riskScore < 70 ? "#f59e0b" : "#f43f5e",
+              }}
             >
               {result.riskScore}
             </h3>
             <div
-              className={`px-4 py-1.5 rounded-2xl text-xs font-black text-white shadow-lg shadow-zinc-100/50 ${getRiskColor(
-                result.riskScore
-              )}`}
+              className="px-4 py-1.5 rounded-2xl text-xs font-black text-white shadow-lg shadow-zinc-100/50"
+              style={{ backgroundColor: getRiskColor(result.riskScore) }}
             >
               {getRiskLabel(result.riskScore)}
             </div>
@@ -120,10 +117,11 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
 
         <div className="w-full max-sm h-3 bg-muted rounded-full overflow-hidden p-0.5 border border-border">
           <div
-            className={`h-full rounded-full transition-all duration-1000 ease-out shadow-sm ${getRiskColor(
-              result.riskScore
-            )}`}
-            style={{ width: `${result.riskScore}%` }}
+            className="h-full rounded-full transition-all duration-1000 ease-out shadow-sm"
+            style={{
+              width: `${result.riskScore}%`,
+              backgroundColor: getRiskColor(result.riskScore),
+            }}
           />
         </div>
       </div>
@@ -131,8 +129,11 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
       {kind === "free" ? (
         <div className="space-y-6 bg-muted/30 p-6 rounded-4xl border border-border">
           <div className="flex items-center gap-2.5 px-1">
-            <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center">
-              <AlertCircle className="w-4 h-4 text-indigo-500" />
+            <div
+              className="w-8 h-8 rounded-xl flex items-center justify-center"
+              style={{ backgroundColor: "#eef2ff" }} // indigo-50
+            >
+              <AlertCircle className="w-4 h-4" style={{ color: "#6366f1" }} /> {/* indigo-500 */}
             </div>
             <h4 className="text-base font-bold text-foreground tracking-tight">핵심 체크 포인트</h4>
           </div>
@@ -142,7 +143,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                 key={i}
                 className="flex gap-4 bg-card p-5 rounded-2xl border border-input shadow-sm text-sm font-medium text-muted-foreground leading-relaxed hover:border-indigo-100 transition-colors"
               >
-                <span className="shrink-0 w-6 h-6 rounded-full bg-indigo-50 text-indigo-500 flex items-center justify-center text-[10px] font-bold">
+                <span
+                  className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
+                  style={{ backgroundColor: "#eef2ff", color: "#6366f1" }}
+                >
                   {i + 1}
                 </span>
                 {reason}
@@ -160,7 +164,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
         <div className="space-y-12">
           <div className="space-y-6">
             <div className="flex items-center gap-2.5 px-1">
-              <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center">
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: "#4f46e5" }} // indigo-600
+              >
                 <ShieldCheck className="w-4 h-4 text-white" />
               </div>
               <h4 className="text-base font-bold text-foreground tracking-tight">
@@ -174,7 +181,14 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                   className="bg-card p-6 rounded-3xl border border-border shadow-sm hover:border-indigo-100 transition-colors group"
                 >
                   <div className="flex justify-between items-start mb-4">
-                    <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-indigo-50 text-[10px] font-bold text-indigo-600 uppercase tracking-wider border border-indigo-100">
+                    <div
+                      className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border"
+                      style={{
+                        backgroundColor: "#eef2ff", // indigo-50
+                        color: "#4f46e5", // indigo-600
+                        borderColor: "#e0e7ff", // indigo-100
+                      }}
+                    >
                       {signal.type}
                     </div>
                   </div>
@@ -189,8 +203,11 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
           <div className="grid md:grid-cols-2 gap-8 pt-10 border-t border-border">
             <div className="space-y-5">
               <div className="flex items-center gap-2.5 px-1">
-                <div className="w-7 h-7 rounded-lg bg-rose-50 flex items-center justify-center">
-                  <Info className="w-3.5 h-3.5 text-rose-500" />
+                <div
+                  className="w-7 h-7 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: "#fff1f2" }} // rose-50
+                >
+                  <Info className="w-3.5 h-3.5" style={{ color: "#f43f5e" }} /> {/* rose-500 */}
                 </div>
                 <h4 className="text-sm font-bold text-foreground">주의가 필요한 지점</h4>
               </div>
@@ -200,7 +217,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                     key={i}
                     className="text-[13px] text-muted-foreground leading-relaxed flex gap-3 font-medium"
                   >
-                    <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-rose-200 mt-1.5" />
+                    <span
+                      className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5"
+                      style={{ backgroundColor: "#fecdd3" }} // rose-200
+                    />
                     {item}
                   </li>
                 ))}
@@ -208,8 +228,12 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
             </div>
             <div className="space-y-5">
               <div className="flex items-center gap-2.5 px-1">
-                <div className="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center">
-                  <ArrowRight className="w-3.5 h-3.5 text-emerald-500" />
+                <div
+                  className="w-7 h-7 rounded-lg flex items-center justify-center"
+                  style={{ backgroundColor: "#ecfdf5" }} // emerald-50
+                >
+                  <ArrowRight className="w-3.5 h-3.5" style={{ color: "#10b981" }} />{" "}
+                  {/* emerald-500 */}
                 </div>
                 <h4 className="text-sm font-bold text-foreground">AI 권장 가이드</h4>
               </div>
@@ -219,7 +243,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                     key={i}
                     className="text-[13px] text-muted-foreground leading-relaxed flex gap-3 font-medium"
                   >
-                    <span className="shrink-0 w-1.5 h-1.5 rounded-full bg-emerald-200 mt-1.5" />
+                    <span
+                      className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5"
+                      style={{ backgroundColor: "#a7f3d0" }} // emerald-200
+                    />
                     {item}
                   </li>
                 ))}
