@@ -2,8 +2,21 @@
 
 import { useState } from "react";
 import { Search, Zap, CreditCard, Loader2, Sparkles } from "lucide-react";
+import { toast } from "sonner";
+import { sendGAEvent } from "@/lib/google-analytics";
 
 import { AnalysisData } from "./AnalysisResult";
+
+export interface AnalyzeResponse {
+  riskScore: number;
+  shortReasons: string[];
+  signals?: { type: string; reason: string }[];
+  implications?: string[];
+  nextActions?: string[];
+  error?: string;
+  kind?: "free" | "paid";
+  productName?: string;
+}
 
 interface AnalysisFormProps {
   freeCount: number;
@@ -16,22 +29,33 @@ export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: A
   const [input, setInput] = useState("");
   const [loadingType, setLoadingType] = useState<"free" | "paid" | null>(null);
 
-  const handleAnalyze = async (kind: "free" | "paid") => {
-    if (!input) return alert("상품명이나 URL을 입력해주세요.");
+  const handleAnalyze = async (type: "free" | "paid") => {
+    if (!input.trim()) {
+      toast.error("상품명이나 URL을 입력해주세요.");
+      return;
+    }
 
-    setLoadingType(kind);
+    setLoadingType(type);
+
+    // GA 이벤트 전송
+    sendGAEvent({
+      action: "analyze_attempt",
+      category: "analysis",
+      label: type,
+    });
+
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
-        body: JSON.stringify({ input, kind }),
+        body: JSON.stringify({ input, kind: type }),
       });
 
-      const data = await res.json();
+      const data: AnalyzeResponse = await res.json();
       if (!res.ok) throw new Error(data.error || "분석 실패");
 
-      onResult(data, kind);
+      onResult(data, type);
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (window as any).gtag?.("event", "analysis_complete", { kind });
+      (window as any).gtag?.("event", "analysis_complete", { kind: type });
     } catch (err) {
       if (err instanceof Error) {
         alert(err.message);

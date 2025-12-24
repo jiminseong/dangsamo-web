@@ -12,6 +12,7 @@ import {
 import { toast } from "sonner";
 import { useRef, useState } from "react";
 import { shareContent } from "@/lib/share";
+import { sendGAEvent } from "@/lib/google-analytics";
 
 export interface AnalysisData {
   productName?: string;
@@ -78,6 +79,12 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag?.("event", "share_image_click");
+
+      sendGAEvent({
+        action: "share_result",
+        category: "share",
+        label: "image",
+      });
     } catch (e) {
       console.error(e);
       toast.error("이미지 공유 실패");
@@ -334,6 +341,11 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
         </button>
         <button
           onClick={async () => {
+            sendGAEvent({
+              action: "share_result",
+              category: "share",
+              label: "link",
+            });
             await shareContent({
               title: "당사모 분석 결과",
               text: `AI 과장광고 분석 결과: 위험도 ${result.riskScore}점`,

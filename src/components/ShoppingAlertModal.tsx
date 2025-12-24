@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import { X, BellRing, Loader2, CheckCircle2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { sendGAEvent } from "@/lib/google-analytics";
 
 interface ShoppingAlertModalProps {
   isOpen: boolean;
@@ -54,6 +55,11 @@ export function ShoppingAlertModal({ isOpen, onClose }: ShoppingAlertModalProps)
       if (!res.ok) throw new Error(data.error || "오류가 발생했습니다.");
 
       setSubmitted(true);
+      sendGAEvent({
+        action: "shopping_alert_submit",
+        category: "lead",
+        label: type,
+      });
       toast.success("신청이 완료되었습니다!");
     } catch (error) {
       if (error instanceof Error) toast.error(error.message);
@@ -68,7 +74,7 @@ export function ShoppingAlertModal({ isOpen, onClose }: ShoppingAlertModalProps)
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}

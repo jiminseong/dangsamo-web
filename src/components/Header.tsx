@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { shareContent } from "@/lib/share";
 import { ShoppingAlertModal } from "./ShoppingAlertModal";
+import { sendGAEvent } from "@/lib/google-analytics";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,6 +36,11 @@ export function Header() {
 
     if (href === "shopping_alert") {
       setIsShoppingAlertOpen(true);
+      sendGAEvent({
+        action: "shopping_alert_view",
+        category: "engagement",
+        label: "shopping_menu",
+      });
       return;
     }
 
