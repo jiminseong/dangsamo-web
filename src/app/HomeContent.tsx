@@ -127,7 +127,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
           className="max-w-xl mx-auto relative"
         >
           <div className="absolute inset-0 bg-linear-to-r from-indigo-500 to-purple-500 rounded-3xl blur-2xl opacity-10" />
-          <div className="bg-white rounded-3xl border border-zinc-200 shadow-2xl shadow-indigo-500/10 p-2 relative overflow-hidden">
+          <div className="bg-white rounded-3xl border border-zinc-200 shadow-2xl shadow-indigo-500/10  relative overflow-hidden">
             {!user ? (
               <div className="p-8 flex flex-col items-center justify-center gap-6 text-center">
                 <div className="w-12 h-12 bg-zinc-50 rounded-xl flex items-center justify-center mb-2">
@@ -142,7 +142,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
                 </div>
               </div>
             ) : (
-              <div className="p-6">
+              <div className="p-0">
                 <AnalysisForm
                   freeCount={stats.freeCount}
                   credits={stats.credits}
