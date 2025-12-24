@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 import { AuthButton } from "@/components/AuthButton";
 import { AnalysisForm } from "@/components/AnalysisForm";
 import { AnalysisResult } from "@/components/AnalysisResult";
@@ -57,6 +58,21 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
     } catch {
       alert("결제 요청 중 오류가 발생했습니다.");
     }
+  };
+
+  const handleFooterShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "당사모",
+          text: "과장광고 없는 깨끗한 쇼핑!",
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("링크가 복사되었습니다!");
+      }
+    } catch {}
   };
 
   const fadeInUp = {
@@ -163,7 +179,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
       </AnimatePresence>
 
       {/* Features Grid (Bento Style) */}
-      <section className="relative z-10 py-32 px-6 bg-white">
+      <section id="features" className="relative z-10 py-32 px-6 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="mb-24 md:text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-5xl font-bold tracking-tighter mb-6 text-zinc-900">
@@ -256,6 +272,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
             {/* Small Card 1 */}
             <motion.div
               {...fadeInUp}
+              id="pricing-audit"
               className="bg-zinc-50 rounded-4xl p-8 border border-zinc-100 hover:border-zinc-200 transition-colors group"
             >
               <div className="w-10 h-10 bg-white rounded-lg border border-zinc-200 flex items-center justify-center shadow-sm mb-6 group-hover:scale-110 transition-transform">
@@ -286,7 +303,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
       </section>
 
       {/* Examples Section */}
-      <section className="py-32 border-t border-zinc-100 bg-zinc-50/50">
+      <section id="examples" className="py-32 border-t border-zinc-100 bg-zinc-50/50">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
             <div>
@@ -411,10 +428,7 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => {
-                navigator.clipboard.writeText(window.location.href);
-                alert("링크가 복사되었습니다.");
-              }}
+              onClick={handleFooterShare}
               className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border border-zinc-200 text-zinc-900 rounded-xl font-bold hover:bg-zinc-50 transition-all cursor-pointer"
             >
               <Share2 className="w-4 h-4" />
@@ -423,6 +437,20 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
           </div>
         </div>
       </footer>
+
+      {/* Legal Disclaimer */}
+      <div className="py-8 bg-zinc-50 border-t border-zinc-100">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <p className="text-[11px] text-zinc-400 leading-relaxed">
+            본 서비스는 AI 기술을 활용하여 상품 정보를 분석한 참고 자료를 제공합니다.{" "}
+            <br className="hidden sm:block" />
+            분석 결과는 100% 정확성을 보장하지 않으며, 최종 구매 결정에 대한 책임은 사용자 본인에게
+            있습니다.
+            <br />
+            당사모는 과장 광고로 인한 소비자 피해를 예방하는 것을 목적으로 합니다.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

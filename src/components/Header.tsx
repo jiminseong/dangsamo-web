@@ -9,9 +9,22 @@ import { motion, AnimatePresence } from "framer-motion";
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast.success("링크가 복사되었습니다!");
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "당사모 - 과장광고 분석",
+          text: "AI로 과장광고 위험도를 확인해보세요!",
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        toast.success("링크가 복사되었습니다!");
+      }
+    } catch {
+      // 공유 취소 시 에러 무시 또는 토스트 처리
+      // toast.error("공유에 실패했습니다.");
+    }
   };
 
   const handleReset = () => {
@@ -21,7 +34,7 @@ export function Header() {
   const menuItems = [
     { name: "예시보기", href: "#examples" },
     { name: "주요기능", href: "#features" },
-    { name: "가격감사", href: "#price-audit" },
+    { name: "가격감사", href: "#pricing-audit" },
   ];
 
   const scrollToSection = (href: string) => {

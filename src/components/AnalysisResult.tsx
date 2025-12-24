@@ -1,7 +1,8 @@
 "use client";
 
-import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight } from "lucide-react";
+import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { useRef, useState } from "react";
 
 export interface AnalysisData {
   productName?: string;
@@ -18,6 +19,9 @@ interface AnalysisResultProps {
 }
 
 export function AnalysisResult({ result, kind }: AnalysisResultProps) {
+  const captureRef = useRef<HTMLDivElement>(null);
+  const [isSharing, setIsSharing] = useState(false);
+
   if (!result) return null;
 
   const getRiskColor = (score: number) => {
@@ -32,15 +36,51 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
     return "위험";
   };
 
-  const handleShare = () => {
-    navigator.clipboard.writeText(window.location.href);
-    toast.success("링크가 복사되었습니다!");
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (window as any).gtag?.("event", "share_click");
+  const handleShare = async () => {
+    if (isSharing || !captureRef.current) return;
+    setIsSharing(true);
+
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const canvas = await html2canvas(captureRef.current, {
+        backgroundColor: "#ffffff",
+        scale: 2,
+      });
+
+      canvas.toBlob(async (blob) => {
+        if (!blob) throw new Error("이미지 생성 실패");
+
+        const file = new File([blob], "dangsamo-analysis.png", { type: "image/png" });
+
+        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+          await navigator.share({
+            files: [file],
+            title: "당사모 분석 결과",
+            text: "AI 과장광고 분석 결과를 확인해보세요! #당사모 #과장광고분석",
+          });
+        } else {
+          const link = document.createElement("a");
+          link.download = "dangsamo-analysis.png";
+          link.href = canvas.toDataURL();
+          link.click();
+          toast.success("이미지가 저장되었습니다.");
+        }
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).gtag?.("event", "share_image_click");
+    } catch (e) {
+      console.error(e);
+      toast.error("이미지 공유 실패");
+    } finally {
+      setIsSharing(false);
+    }
   };
 
   return (
-    <div className="bg-card text-card-foreground rounded-3xl p-8 md:p-10 space-y-10 shadow-2xl shadow-zinc-200/50 border border-border animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div
+      ref={captureRef}
+      className="bg-card text-card-foreground rounded-3xl p-8 md:p-10 space-y-10 shadow-2xl shadow-zinc-200/50 border border-border animate-in fade-in slide-in-from-bottom-4 duration-700"
+    >
       <div className="flex flex-col items-center text-center space-y-6">
         {/* 제품명 표시 (있을 경우에만) */}
         {result.productName && (
@@ -189,13 +229,18 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
         </div>
       )}
 
-      <div className="pt-6">
+      <div className="pt-6" data-html2canvas-ignore>
         <button
           onClick={handleShare}
-          className="w-full h-14 flex items-center justify-center gap-3 rounded-2xl bg-primary text-primary-foreground text-sm font-bold transition-all hover:opacity-90 shadow-xl shadow-zinc-200 active:scale-[0.98] cursor-pointer"
+          disabled={isSharing}
+          className="w-full h-14 flex items-center justify-center gap-3 rounded-2xl bg-primary text-primary-foreground text-sm font-bold transition-all hover:opacity-90 shadow-xl shadow-zinc-200 active:scale-[0.98] cursor-pointer disabled:opacity-50"
         >
-          <Share2 className="w-4 h-4" />
-          분석 결과 친구에게 공유하기
+          {isSharing ? (
+            <Loader2 className="w-4 h-4 animate-spin" />
+          ) : (
+            <Share2 className="w-4 h-4" />
+          )}
+          {isSharing ? "이미지 생성 중..." : "분석 결과 이미지로 공유하기"}
         </button>
       </div>
     </div>
