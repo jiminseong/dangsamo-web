@@ -4,10 +4,13 @@ import { AuthButton } from "./AuthButton";
 import { Share2, Menu, X, RotateCcw } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { toast } from "sonner";
 import { shareContent } from "@/lib/share";
+import { ShoppingAlertModal } from "./ShoppingAlertModal";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isShoppingAlertOpen, setIsShoppingAlertOpen] = useState(false);
 
   const handleShare = async () => {
     await shareContent({
@@ -24,10 +27,17 @@ export function Header() {
     { name: "예시보기", href: "#examples" },
     { name: "주요기능", href: "#features" },
     { name: "가격감사", href: "#pricing-audit" },
+    { name: "안심쇼핑", href: "shopping_alert" },
   ];
 
   const scrollToSection = (href: string) => {
     setIsMenuOpen(false);
+
+    if (href === "shopping_alert") {
+      setIsShoppingAlertOpen(true);
+      return;
+    }
+
     const element = document.querySelector(href);
     if (element) {
       const headerOffset = 80;
@@ -131,6 +141,11 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <ShoppingAlertModal
+        isOpen={isShoppingAlertOpen}
+        onClose={() => setIsShoppingAlertOpen(false)}
+      />
     </header>
   );
 }
