@@ -76,7 +76,10 @@ export async function POST(request: Request) {
       const result = await analyzePaid(input);
 
       // 크레딧 차감 및 로그 저장
-      await supabase.from("credits").update({ remaining: credits.remaining - 1 });
+      await supabase
+        .from("credits")
+        .update({ remaining: credits.remaining - 1 })
+        .eq("user_id", user.id);
 
       await supabase.from("analysis_logs").insert({
         user_id: user.id,
