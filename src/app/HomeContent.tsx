@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
+import { shareContent } from "@/lib/share";
 import { AuthButton } from "@/components/AuthButton";
 import { AnalysisForm } from "@/components/AnalysisForm";
 import { AnalysisResult } from "@/components/AnalysisResult";
@@ -61,18 +62,10 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
   };
 
   const handleFooterShare = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "당사모",
-          text: "과장광고 없는 깨끗한 쇼핑!",
-          url: window.location.href,
-        });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success("링크가 복사되었습니다!");
-      }
-    } catch {}
+    await shareContent({
+      title: "당사모",
+      text: "과장광고 없는 깨끗한 쇼핑!",
+    });
   };
 
   const fadeInUp = {

@@ -2,29 +2,18 @@
 
 import { AuthButton } from "./AuthButton";
 import { Share2, Menu, X, RotateCcw } from "lucide-react";
-import { toast } from "sonner";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { shareContent } from "@/lib/share";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleShare = async () => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: "당사모 - 과장광고 분석",
-          text: "AI로 과장광고 위험도를 확인해보세요!",
-          url: window.location.href,
-        });
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        toast.success("링크가 복사되었습니다!");
-      }
-    } catch {
-      // 공유 취소 시 에러 무시 또는 토스트 처리
-      // toast.error("공유에 실패했습니다.");
-    }
+    await shareContent({
+      title: "당사모 - 과장광고 분석",
+      text: "AI로 과장광고 위험도를 확인해보세요!",
+    });
   };
 
   const handleReset = () => {

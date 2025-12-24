@@ -3,6 +3,7 @@
 import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
+import { shareContent } from "@/lib/share";
 
 export interface AnalysisData {
   productName?: string;
@@ -52,19 +53,11 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
 
         const file = new File([blob], "dangsamo-analysis.png", { type: "image/png" });
 
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({
-            files: [file],
-            title: "당사모 분석 결과",
-            text: "AI 과장광고 분석 결과를 확인해보세요! #당사모 #과장광고분석",
-          });
-        } else {
-          const link = document.createElement("a");
-          link.download = "dangsamo-analysis.png";
-          link.href = canvas.toDataURL();
-          link.click();
-          toast.success("이미지가 저장되었습니다.");
-        }
+        await shareContent({
+          title: "당사모 분석 결과",
+          text: "AI 과장광고 분석 결과를 확인해보세요! #당사모 #과장광고분석",
+          files: [file],
+        });
       });
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (window as any).gtag?.("event", "share_image_click");
