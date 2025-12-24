@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function Footer() {
   return (
     <footer className="bg-slate-900 border-t border-slate-800 py-16 text-slate-400">
@@ -45,8 +47,16 @@ export function Footer() {
                 서비스
               </h4>
               <ul className="text-slate-400 space-y-2 text-sm">
-                <li>이용약관</li>
-                <li>개인정보처리방침</li>
+                <li>
+                  <Link href="/terms" className="hover:text-white transition-colors">
+                    이용약관
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/privacy" className="hover:text-white transition-colors">
+                    개인정보처리방침
+                  </Link>
+                </li>
                 <li>광고 제보하기</li>
                 <li>공지사항</li>
               </ul>
