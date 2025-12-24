@@ -46,6 +46,15 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
       const canvas = await html2canvas(captureRef.current, {
         backgroundColor: "#ffffff",
         scale: 2,
+        onclone: (clonedDoc) => {
+          const element = clonedDoc.getElementById("analysis-result-capture");
+          if (element) {
+            element.style.transform = "none";
+            element.style.animation = "none";
+            element.style.transition = "none";
+            element.classList.remove("animate-in", "fade-in", "slide-in-from-bottom-4");
+          }
+        },
       });
 
       canvas.toBlob(async (blob) => {
@@ -71,22 +80,40 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
 
   return (
     <div
+      id="analysis-result-capture"
       ref={captureRef}
-      className="bg-card text-card-foreground rounded-3xl p-8 md:p-10 space-y-10 shadow-2xl shadow-zinc-200/50 border border-border animate-in fade-in slide-in-from-bottom-4 duration-700"
+      className="rounded-3xl p-8 md:p-10 space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700"
+      style={{
+        backgroundColor: "#ffffff",
+        color: "#18181b",
+        border: "1px solid #e4e4e7",
+        boxShadow: "0 25px 50px -12px rgba(228, 228, 231, 0.5)",
+      }}
     >
       <div className="flex flex-col items-center text-center space-y-6">
         {/* 제품명 표시 (있을 경우에만) */}
         {result.productName && (
-          <div className="bg-zinc-100/80 px-4 py-2 rounded-full border border-zinc-200 mb-2">
-            <span className="text-zinc-500 text-xs font-bold mr-2">분석 대상</span>
-            <span className="text-zinc-900 text-sm font-bold tracking-tight">
+          <div
+            className="px-4 py-2 rounded-full border mb-2"
+            style={{
+              backgroundColor: "rgba(244, 244, 245, 0.8)",
+              borderColor: "#e4e4e7",
+            }}
+          >
+            <span className="text-xs font-bold mr-2" style={{ color: "#71717a" }}>
+              분석 대상
+            </span>
+            <span className="text-sm font-bold tracking-tight" style={{ color: "#18181b" }}>
               {result.productName}
             </span>
           </div>
         )}
 
         <div className="space-y-2">
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+          <span
+            className="text-[11px] font-bold uppercase tracking-[0.2em]"
+            style={{ color: "#71717a" }}
+          >
             AI 분석 위험도 점수
           </span>
           <div className="flex items-center justify-center gap-4">
@@ -100,27 +127,37 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
               {result.riskScore}
             </h3>
             <div
-              className="px-4 py-1.5 rounded-2xl text-xs font-black text-white shadow-lg shadow-zinc-100/50"
-              style={{ backgroundColor: getRiskColor(result.riskScore) }}
+              className="px-4 py-1.5 rounded-2xl text-xs font-black text-white"
+              style={{
+                backgroundColor: getRiskColor(result.riskScore),
+                boxShadow: "0 10px 15px -3px rgba(244, 244, 245, 0.5)",
+              }}
             >
               {getRiskLabel(result.riskScore)}
             </div>
           </div>
         </div>
 
-        <div className="w-full max-sm h-3 bg-muted rounded-full overflow-hidden p-0.5 border border-border">
+        <div
+          className="w-full max-sm h-3 rounded-full overflow-hidden p-0.5 border"
+          style={{ backgroundColor: "#f4f4f5", borderColor: "#e4e4e7" }}
+        >
           <div
-            className="h-full rounded-full transition-all duration-1000 ease-out shadow-sm"
+            className="h-full rounded-full transition-all duration-1000 ease-out"
             style={{
               width: `${result.riskScore}%`,
               backgroundColor: getRiskColor(result.riskScore),
+              boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
             }}
           />
         </div>
       </div>
 
       {kind === "free" ? (
-        <div className="space-y-6 bg-muted/30 p-6 rounded-4xl border border-border">
+        <div
+          className="space-y-6 p-6 rounded-4xl border"
+          style={{ backgroundColor: "rgba(244, 244, 245, 0.3)", borderColor: "#e4e4e7" }}
+        >
           <div className="flex items-center gap-2.5 px-1">
             <div
               className="w-8 h-8 rounded-xl flex items-center justify-center"
@@ -128,13 +165,21 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
             >
               <AlertCircle className="w-4 h-4" style={{ color: "#6366f1" }} /> {/* indigo-500 */}
             </div>
-            <h4 className="text-base font-bold text-foreground tracking-tight">핵심 체크 포인트</h4>
+            <h4 className="text-base font-bold tracking-tight" style={{ color: "#18181b" }}>
+              핵심 체크 포인트
+            </h4>
           </div>
           <div className="grid gap-3">
             {result.shortReasons?.map((reason: string, i: number) => (
               <div
                 key={i}
-                className="flex gap-4 bg-card p-5 rounded-2xl border border-input shadow-sm text-sm font-medium text-muted-foreground leading-relaxed hover:border-indigo-100 transition-colors"
+                className="flex gap-4 p-5 rounded-2xl border text-sm font-medium leading-relaxed transition-colors"
+                style={{
+                  backgroundColor: "#ffffff",
+                  borderColor: "#e4e4e7",
+                  color: "#71717a",
+                  boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                }}
               >
                 <span
                   className="shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold"
@@ -147,7 +192,7 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
             ))}
           </div>
           <div className="pt-2 px-1">
-            <p className="text-xs text-muted-foreground font-medium leading-relaxed">
+            <p className="text-xs font-medium leading-relaxed" style={{ color: "#71717a" }}>
               * 무료 요약 점검은 핵심 위험 요소만 표시합니다. 정밀한 분석은 상세 점검을
               이용해주세요.
             </p>
@@ -163,7 +208,7 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
               >
                 <ShieldCheck className="w-4 h-4 text-white" />
               </div>
-              <h4 className="text-base font-bold text-foreground tracking-tight">
+              <h4 className="text-base font-bold tracking-tight" style={{ color: "#18181b" }}>
                 상세 정밀 분석 리포트
               </h4>
             </div>
@@ -171,7 +216,12 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
               {result.signals?.map((signal, i) => (
                 <div
                   key={i}
-                  className="bg-card p-6 rounded-3xl border border-border shadow-sm hover:border-indigo-100 transition-colors group"
+                  className="p-6 rounded-3xl border transition-colors group"
+                  style={{
+                    backgroundColor: "#ffffff",
+                    borderColor: "#e4e4e7",
+                    boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+                  }}
                 >
                   <div className="flex justify-between items-start mb-4">
                     <div
@@ -185,7 +235,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                       {signal.type}
                     </div>
                   </div>
-                  <div className="text-foreground text-[15px] leading-relaxed font-bold tracking-tight">
+                  <div
+                    className="text-[15px] leading-relaxed font-bold tracking-tight"
+                    style={{ color: "#18181b" }}
+                  >
                     {signal.reason}
                   </div>
                 </div>
@@ -193,7 +246,10 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8 pt-10 border-t border-border">
+          <div
+            className="grid md:grid-cols-2 gap-8 pt-10 border-t"
+            style={{ borderColor: "#e4e4e7" }}
+          >
             <div className="space-y-5">
               <div className="flex items-center gap-2.5 px-1">
                 <div
@@ -202,13 +258,16 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                 >
                   <Info className="w-3.5 h-3.5" style={{ color: "#f43f5e" }} /> {/* rose-500 */}
                 </div>
-                <h4 className="text-sm font-bold text-foreground">주의가 필요한 지점</h4>
+                <h4 className="text-sm font-bold" style={{ color: "#18181b" }}>
+                  주의가 필요한 지점
+                </h4>
               </div>
               <ul className="space-y-3 px-1">
                 {result.implications?.map((item: string, i: number) => (
                   <li
                     key={i}
-                    className="text-[13px] text-muted-foreground leading-relaxed flex gap-3 font-medium"
+                    className="text-[13px] leading-relaxed flex gap-3 font-medium"
+                    style={{ color: "#71717a" }}
                   >
                     <span
                       className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5"
@@ -228,13 +287,16 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
                   <ArrowRight className="w-3.5 h-3.5" style={{ color: "#10b981" }} />{" "}
                   {/* emerald-500 */}
                 </div>
-                <h4 className="text-sm font-bold text-foreground">AI 권장 가이드</h4>
+                <h4 className="text-sm font-bold" style={{ color: "#18181b" }}>
+                  AI 권장 가이드
+                </h4>
               </div>
               <ul className="space-y-3 px-1">
                 {result.nextActions?.map((item: string, i: number) => (
                   <li
                     key={i}
-                    className="text-[13px] text-muted-foreground leading-relaxed flex gap-3 font-medium"
+                    className="text-[13px] leading-relaxed flex gap-3 font-medium"
+                    style={{ color: "#71717a" }}
                   >
                     <span
                       className="shrink-0 w-1.5 h-1.5 rounded-full mt-1.5"
