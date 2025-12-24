@@ -11,10 +11,11 @@ export async function POST(request: Request) {
   });
 
   console.log("[Webhook] Received request");
-  // console.log("[Webhook] Headers:", JSON.stringify(headers)); // 보안상 헤더 전체 로깅은 주의
+  console.log("[Webhook] Headers:", JSON.stringify(headers, null, 2));
 
-  if (!headers["polar-webhook-signature"]) {
-    console.error("[Webhook] No signature found");
+  const signature = request.headers.get("webhook-signature");
+  if (!signature) {
+    console.error("[Webhook] No signature found. Available headers:", Object.keys(headers));
     return new Response("No signature", { status: 401 });
   }
 
