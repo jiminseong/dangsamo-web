@@ -240,9 +240,9 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
                 </p>
                 <ul className="space-y-4">
                   {[
-                    "식약처 금지 문구 DB 연동",
-                    "공정위 제재 사례 학습",
-                    "소비자 보호원 피해 사례 매칭",
+                    "식약처 금지 문구 DB 연동(예정)",
+                    "공정위 제재 사례 학습(예정)",
+                    "소비자 보호원 피해 사례 매칭(예정)",
                   ].map((item, i) => (
                     <li key={i} className="flex items-center gap-3 text-sm text-zinc-300">
                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
