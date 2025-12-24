@@ -13,6 +13,7 @@ export async function analyzeFree(input: string) {
     
     출력 형식: 반드시 아래 JSON 형식으로만 응답하세요. 다른 설명은 생략하세요.
     {
+      "productName": "감지된 상품명 (짧게)",
       "riskScore": 0-100 (정수, 높을수록 위험),
       "shortReasons": ["이유1", "이유2"] (최대 2개, 짧고 친근한 한국어)
     }
@@ -27,7 +28,11 @@ export async function analyzeFree(input: string) {
     return JSON.parse(jsonStr);
   } catch {
     console.error("AI Response Parsing Error:", text);
-    return { riskScore: 50, shortReasons: ["분석 중 오류가 발생했습니다."] };
+    return {
+      productName: "분석 실패",
+      riskScore: 50,
+      shortReasons: ["분석 중 오류가 발생했습니다."],
+    };
   }
 }
 
@@ -37,11 +42,11 @@ export async function analyzePaid(input: string) {
   const prompt = `
     당신은 소비자를 보호하는 "광고 리스크 점검" 전문가입니다.
     사용자가 입력한 상품명 또는 URL에 대해 과장 광고 위험성을 상세히 분석하세요.
-    까지
     입력: ${input}
     
     출력 형식: 반드시 아래 JSON 형식으로만 응답하세요. 다른 설명은 생략하세요.
     {
+      "productName": "감지된 상품명 (짧게)",
       "riskScore": 0-100 (정수),
       "signals": [{"type":"의심 신호 종류", "reason":"구체적 이유"}],
       "implications": ["사용자에게 미치는 영향1", "영향2"],
@@ -62,6 +67,7 @@ export async function analyzePaid(input: string) {
   } catch {
     console.error("AI Response Parsing Error:", text);
     return {
+      productName: "분석 실패",
       riskScore: 50,
       signals: [],
       implications: ["상세 분석 중 오류가 발생했습니다."],

@@ -4,6 +4,7 @@ import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight } from "lucide-react
 import { toast } from "sonner";
 
 export interface AnalysisData {
+  productName?: string;
   riskScore: number;
   shortReasons?: string[];
   signals?: { type: string; reason: string }[];
@@ -41,6 +42,16 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
   return (
     <div className="bg-card text-card-foreground rounded-3xl p-8 md:p-10 space-y-10 shadow-2xl shadow-zinc-200/50 border border-border animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="flex flex-col items-center text-center space-y-6">
+        {/* 제품명 표시 (있을 경우에만) */}
+        {result.productName && (
+          <div className="bg-zinc-100/80 px-4 py-2 rounded-full border border-zinc-200 mb-2">
+            <span className="text-zinc-500 text-xs font-bold mr-2">분석 대상</span>
+            <span className="text-zinc-900 text-sm font-bold tracking-tight">
+              {result.productName}
+            </span>
+          </div>
+        )}
+
         <div className="space-y-2">
           <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
             AI 분석 위험도 점수

@@ -33,17 +33,17 @@ export function Header() {
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
       window.scrollTo({
         top: offsetPosition,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     }
   };
 
   return (
     <header className="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md border-b border-slate-100 z-50">
-      <div className="max-w-[880px] mx-auto px-4 h-16 flex items-center justify-between">
-        <div 
-          className="flex items-center gap-2 cursor-pointer group" 
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+        <div
+          className="flex items-center gap-2 cursor-pointer group"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         >
           <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm group-hover:scale-105 transition-transform">
             당
@@ -63,14 +63,14 @@ export function Header() {
             </button>
           ))}
           <div className="h-4 w-px bg-slate-200 mx-1"></div>
-          <button 
+          <button
             onClick={handleShare}
             className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-500"
             title="공유하기"
           >
             <Share2 className="w-4 h-4" />
           </button>
-          <button 
+          <button
             onClick={handleReset}
             className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-500"
             title="초기화"
@@ -83,7 +83,7 @@ export function Header() {
         {/* Mobile Menu Button */}
         <div className="flex items-center gap-2 md:hidden">
           <AuthButton />
-          <button 
+          <button
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="p-2 hover:bg-slate-50 rounded-lg transition-colors text-slate-600"
           >
@@ -111,14 +111,14 @@ export function Header() {
               </button>
             ))}
             <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-50">
-              <button 
+              <button
                 onClick={handleShare}
                 className="flex items-center justify-center gap-2 py-3 hover:bg-slate-50 rounded-xl text-slate-600 text-sm font-medium transition-colors"
               >
                 <Share2 className="w-4 h-4" />
                 공유하기
               </button>
-              <button 
+              <button
                 onClick={handleReset}
                 className="flex items-center justify-center gap-2 py-3 hover:bg-slate-50 rounded-xl text-slate-600 text-sm font-medium transition-colors"
               >

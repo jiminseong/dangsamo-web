@@ -1,7 +1,7 @@
 export function Footer() {
   return (
     <footer className="bg-slate-900 border-t border-slate-800 py-16 text-slate-400">
-      <div className="max-w-[880px] mx-auto px-4">
+      <div className="max-w-7xl  mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-12">
           <div className="space-y-6">
             <div className="flex items-center gap-2">
@@ -16,16 +16,23 @@ export function Footer() {
               우리는 데이터로 허위 정보와 과장 마케팅을 걸러냅니다.
             </p>
             <div className="flex flex-col gap-1">
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">문의 및 제보</span>
-              <a href="mailto:support@dangsamo.ai" className="text-white font-semibold text-sm hover:underline">
+              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                문의 및 제보
+              </span>
+              <a
+                href="mailto:support@dangsamo.ai"
+                className="text-white font-semibold text-sm hover:underline"
+              >
                 support@dangsamo.ai
               </a>
             </div>
           </div>
-          
+
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-4">
-              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">분석 도구</h4>
+              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                분석 도구
+              </h4>
               <ul className="text-slate-400 space-y-2 text-sm">
                 <li>요약 점검</li>
                 <li>상세 위험 분석</li>
@@ -34,7 +41,9 @@ export function Footer() {
               </ul>
             </div>
             <div className="space-y-4">
-              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">서비스</h4>
+              <h4 className="text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                서비스
+              </h4>
               <ul className="text-slate-400 space-y-2 text-sm">
                 <li>이용약관</li>
                 <li>개인정보처리방침</li>
@@ -44,11 +53,9 @@ export function Footer() {
             </div>
           </div>
         </div>
-        
+
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 pt-8 border-t border-slate-800">
-          <p className="text-xs text-slate-500 font-medium">
-            © 2025 당사모. All rights reserved.
-          </p>
+          <p className="text-xs text-slate-500 font-medium">© 2025 당사모. All rights reserved.</p>
           <div className="flex items-center gap-4 text-xs font-bold text-slate-500">
             <div className="flex items-center gap-2 bg-slate-800 px-3 py-1.5 rounded-full border border-slate-700 shadow-sm">
               <span className="relative flex h-2 w-2">
