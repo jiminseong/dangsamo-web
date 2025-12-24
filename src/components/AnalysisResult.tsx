@@ -1,6 +1,14 @@
 "use client";
 
-import { Share2, AlertCircle, ShieldCheck, Info, ArrowRight, Loader2 } from "lucide-react";
+import {
+  Share2,
+  AlertCircle,
+  ShieldCheck,
+  Info,
+  ArrowRight,
+  Loader2,
+  Link as LinkIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useRef, useState } from "react";
 import { shareContent } from "@/lib/share";
@@ -323,6 +331,19 @@ export function AnalysisResult({ result, kind }: AnalysisResultProps) {
             <Share2 className="w-4 h-4" />
           )}
           {isSharing ? "이미지 생성 중..." : "분석 결과 이미지로 공유하기"}
+        </button>
+        <button
+          onClick={async () => {
+            await shareContent({
+              title: "당사모 분석 결과",
+              text: `AI 과장광고 분석 결과: 위험도 ${result.riskScore}점`,
+              data: result, // API를 통해 URL 생성
+            });
+          }}
+          className="w-full h-14 flex items-center justify-center gap-3 rounded-2xl bg-white border border-zinc-200 text-zinc-900 text-sm font-bold transition-all hover:bg-zinc-50 active:scale-[0.98] cursor-pointer mt-3"
+        >
+          <LinkIcon className="w-4 h-4" />
+          결과 링크로 공유하기
         </button>
       </div>
     </div>

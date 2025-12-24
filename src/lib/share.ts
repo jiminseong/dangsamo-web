@@ -5,14 +5,43 @@ interface ShareOptions {
   text?: string;
   url?: string;
   files?: File[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any; // 분석 결과 JSON 데이터 (공유 URL 생성용)
 }
 
 export const shareContent = async (options: ShareOptions) => {
   const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  let shareUrl = options.url || window.location.href;
+
+  // 데이터 기반 URL 생성 (이미지 공유가 아닐 때만)
+  if (options.data && (!options.files || options.files.length === 0)) {
+    try {
+      // 로딩 토스트 시작
+      const toastId = toast.loading("공유 링크 생성 중...");
+
+      const response = await fetch("/api/share", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ result: options.data }),
+      });
+
+      if (!response.ok) throw new Error("링크 생성 실패");
+
+      const result = await response.json();
+      shareUrl = result.url;
+
+      toast.dismiss(toastId); // 로딩 토스트 제거
+    } catch (e) {
+      console.error("URL 생성 실패:", e);
+      toast.error("공유 링크 생성에 실패했습니다. 현재 페이지 링크로 대체합니다.");
+      // 실패 시 현재 페이지 URL 유지
+    }
+  }
+
   const data = {
     title: options.title || "당사모",
     text: options.text || "과장광고 없는 깨끗한 쇼핑!",
-    url: options.url || window.location.href,
+    url: shareUrl,
     files: options.files,
   };
 
