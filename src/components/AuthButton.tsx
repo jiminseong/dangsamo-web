@@ -39,36 +39,39 @@ export function AuthButton() {
     router.refresh();
   };
 
+  const userName =
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    user?.email?.split("@")[0] ||
+    "사용자";
+
   if (user) {
     return (
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <Link
           href="/mypage"
-          className="hidden sm:flex flex-col items-end -space-y-1 hover:opacity-70 transition-opacity"
+          className="group flex items-center gap-3 pl-3 pr-1 py-1 rounded-full hover:bg-slate-50 transition-all border border-transparent hover:border-slate-100"
         >
-          <span className="text-[10px] font-bold text-zinc-400 uppercase tracking-wider">
-            마이페이지
-          </span>
-          <span className="text-xs font-medium text-zinc-600 max-w-[120px] truncate">
-            {user.email}
-          </span>
+          <div className="hidden sm:flex flex-col items-end -space-y-0.5">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider group-hover:text-indigo-500 transition-colors">
+              마이페이지
+            </span>
+            <span className="text-sm font-bold text-slate-700 max-w-[100px] truncate group-hover:text-slate-900">
+              {userName}
+            </span>
+          </div>
+          <div className="w-9 h-9 rounded-full bg-white border border-slate-200 flex items-center justify-center text-slate-400 group-hover:text-indigo-600 group-hover:border-indigo-200 shadow-sm transition-all">
+            <UserIcon className="w-5 h-5" />
+          </div>
         </Link>
-        <div className="flex items-center gap-1 bg-zinc-50 p-1 rounded-full border border-zinc-100">
-          <Link
-            href="/mypage"
-            className="w-8 h-8 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-indigo-600 hover:border-indigo-300 transition-all"
-            title="마이페이지"
-          >
-            <UserIcon className="w-4 h-4" />
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="p-2 hover:bg-white hover:text-red-500 rounded-full transition-all text-zinc-400"
-            title="로그아웃"
-          >
-            <LogOut className="w-4 h-4" />
-          </button>
-        </div>
+
+        <button
+          onClick={handleLogout}
+          className="w-9 h-9 flex items-center justify-center rounded-full hover:bg-slate-100 text-slate-400 hover:text-red-500 transition-colors"
+          title="로그아웃"
+        >
+          <LogOut className="w-4 h-4" />
+        </button>
       </div>
     );
   }
