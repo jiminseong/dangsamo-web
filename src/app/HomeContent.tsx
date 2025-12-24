@@ -421,8 +421,6 @@ export function HomeContent({ user, initialData }: HomeContentProps) {
               공유하기
             </button>
           </div>
-
-          <div className="pt-20 text-xs text-zinc-400">© 2024 Dangsamo. All rights reserved.</div>
         </div>
       </footer>
     </div>
