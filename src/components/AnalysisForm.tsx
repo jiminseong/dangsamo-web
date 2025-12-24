@@ -14,12 +14,12 @@ interface AnalysisFormProps {
 
 export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: AnalysisFormProps) {
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingType, setLoadingType] = useState<"free" | "paid" | null>(null);
 
   const handleAnalyze = async (kind: "free" | "paid") => {
     if (!input) return alert("상품명이나 URL을 입력해주세요.");
 
-    setIsLoading(true);
+    setLoadingType(kind);
     try {
       const res = await fetch("/api/analyze", {
         method: "POST",
@@ -39,7 +39,7 @@ export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: A
         alert("알 수 없는 오류가 발생했습니다.");
       }
     } finally {
-      setIsLoading(false);
+      setLoadingType(null);
     }
   };
 
@@ -66,10 +66,10 @@ export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: A
         <div className="space-y-3">
           <button
             onClick={() => handleAnalyze("free")}
-            disabled={isLoading || freeCount >= 3}
+            disabled={!!loadingType || freeCount >= 3}
             className="w-full h-16 bg-card border border-input text-card-foreground rounded-2xl font-bold hover:bg-accent transition-all disabled:opacity-50 flex items-center justify-center gap-3 shadow-sm hover:shadow-md active:scale-[0.98] cursor-pointer"
           >
-            {isLoading ? (
+            {loadingType === "free" ? (
               <Loader2 className="w-5 h-5 animate-spin text-muted-foreground" />
             ) : (
               <Zap className="w-5 h-5 text-amber-500 fill-amber-500" />
@@ -93,10 +93,10 @@ export function AnalysisForm({ freeCount, credits, onResult, onStartPayment }: A
           {credits > 0 ? (
             <button
               onClick={() => handleAnalyze("paid")}
-              disabled={isLoading}
+              disabled={!!loadingType}
               className="w-full h-16 bg-primary text-primary-foreground rounded-2xl font-bold hover:opacity-90 transition-all flex items-center justify-center gap-3 shadow-lg shadow-indigo-100/20 active:scale-[0.98] cursor-pointer"
             >
-              {isLoading ? (
+              {loadingType === "paid" ? (
                 <Loader2 className="w-5 h-5 animate-spin" />
               ) : (
                 <Sparkles className="w-5 h-5 text-indigo-200 fill-indigo-200" />
