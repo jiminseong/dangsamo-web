@@ -1,5 +1,5 @@
+import { createAdminClient } from "@/lib/supabase";
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase";
 
 import { validateEvent } from "@polar-sh/sdk/webhooks";
 
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
       if (checkout.status === "succeeded" && checkout.metadata?.user_id) {
         const userId = checkout.metadata.user_id as string;
-        const supabase = await createClient();
+        const supabase = createAdminClient();
 
         // 1. 중복 결제 확인 (provider_ref = checkout.id)
         const { data: existing, error: findError } = await supabase
